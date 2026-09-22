@@ -1,0 +1,50 @@
+## .NET / Visual Studio
+bin/
+obj/
+out/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+artifacts/
+TestResults/
+[Cc]overage*/
+*.trx
+*.coverage
+*.coveragexml
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## VS Code (keep shared settings, ignore local)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+## User-specific and secrets
+appsettings.*.local.json
+secrets.json
+*.env
+.env
+.env.*
+!.env.example
+
+## Aspire
+**/*.AppHost/aspire-*.json
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Docker local volumes
+.data/

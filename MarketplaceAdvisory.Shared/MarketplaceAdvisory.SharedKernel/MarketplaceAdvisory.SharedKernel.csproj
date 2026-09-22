@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Cross-cutting DDD primitives (guards, base types, Money, TenantId, auth constants).
+       Intentionally dependency-free so every layer can reference it. -->
+
+</Project>

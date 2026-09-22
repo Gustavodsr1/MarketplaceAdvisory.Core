@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Anti-Corruption Layer contracts: IMarketplaceAdapter + canonical marketplace models. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\MarketplaceAdvisory.SharedKernel\MarketplaceAdvisory.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

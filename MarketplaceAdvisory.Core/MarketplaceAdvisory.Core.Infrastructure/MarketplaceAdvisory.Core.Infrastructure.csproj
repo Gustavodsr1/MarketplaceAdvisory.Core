@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core Infrastructure layer: EF Core (writes) + Dapper (reads) + Redis + marketplace adapters
+       + background jobs. Implements the ports declared in the Application layer. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\MarketplaceAdvisory.Core.Application\MarketplaceAdvisory.Core.Application.csproj" />
+    <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.Integrations.Abstractions\MarketplaceAdvisory.Integrations.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Persistence: EF Core + Npgsql for commands, Dapper for high-performance queries -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Dapper" />
+    <!-- Distributed cache -->
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <!-- Options binding, background jobs, resilient HTTP for marketplace integrations -->
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <PackageReference Include="Quartz.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Refit" />
+    <PackageReference Include="Refit.HttpClientFactory" />
+  </ItemGroup>
+
+</Project>

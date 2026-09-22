@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core Domain layer: entities, aggregates, value objects, domain events, repository ports. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.SharedKernel\MarketplaceAdvisory.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ErrorOr" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core Application layer: CQRS commands/queries, handlers, validators, mapping and ports. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\MarketplaceAdvisory.Core.Domain\MarketplaceAdvisory.Core.Domain.csproj" />
+    <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.SharedKernel\MarketplaceAdvisory.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.Contracts\MarketplaceAdvisory.Contracts.csproj" />
+    <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.Integrations.Abstractions\MarketplaceAdvisory.Integrations.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="Mapster" />
+    <PackageReference Include="Mapster.DependencyInjection" />
+    <PackageReference Include="ErrorOr" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <!-- Dapper is used by read-side (query) handlers for the CQRS read model -->
+    <PackageReference Include="Dapper" />
+  </ItemGroup>
+
+</Project>

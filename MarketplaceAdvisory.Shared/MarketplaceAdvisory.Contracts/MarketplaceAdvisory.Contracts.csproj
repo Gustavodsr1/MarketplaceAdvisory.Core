@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Public API DTOs shared between Core.Api, BFF.Api and Security.Api.
+       Keep this project free of framework/serialization dependencies. -->
+
+</Project>
