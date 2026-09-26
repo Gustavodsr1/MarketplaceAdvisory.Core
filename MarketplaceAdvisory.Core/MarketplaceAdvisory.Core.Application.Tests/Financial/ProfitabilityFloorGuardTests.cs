@@ -45,13 +45,26 @@ public sealed class ProfitabilityFloorGuardTests
     }
 
     [Fact]
-    public async Task PriceBelowFloor_WithOverride_RequiresOverride()
+    public async Task PriceBelowFloor_WithSufficientOverride_RequiresOverride()
     {
         var guard = NewGuard();
-        var token = new HumanOverrideToken("user:42", "MARKETING_PROMO", acceptedLossAmount: 10m);
+        // Gap from 60 to the ≈94.81 floor is ≈34.81, so 40 is a sufficient accepted loss.
+        var token = new HumanOverrideToken("user:42", "MARKETING_PROMO", acceptedLossAmount: 40m);
 
         var decision = await guard.EvaluateAsync(BaseInputs(salePrice: 60m), token, CancellationToken.None);
 
         decision.Should().BeOfType<FloorDecision.RequiresOverride>();
+    }
+
+    [Fact]
+    public async Task PriceBelowFloor_WithInsufficientOverride_ReturnsHeldFloorHit()
+    {
+        var guard = NewGuard();
+        // Accepted loss of 10 is smaller than the ≈34.81 gap → treated as a plain floor hit.
+        var token = new HumanOverrideToken("user:42", "MARKETING_PROMO", acceptedLossAmount: 10m);
+
+        var decision = await guard.EvaluateAsync(BaseInputs(salePrice: 60m), token, CancellationToken.None);
+
+        decision.Should().BeOfType<FloorDecision.HeldFloorHit>();
     }
 }

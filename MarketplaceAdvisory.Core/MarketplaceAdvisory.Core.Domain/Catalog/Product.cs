@@ -132,20 +132,34 @@ public sealed class Product : AggregateRoot<Guid>
     /// Applies a new sale price after the caller has consulted the guard. Any decision other
     /// than <see cref="FloorDecision.Allowed"/> MUST reject the write.
     /// </summary>
-    public ErrorOr<Success> SetSalePrice(MarketplaceType marketplace, Money price, FloorDecision floorDecision)
+    public ErrorOr<Success> SetSalePrice(
+        MarketplaceType marketplace,
+        Money price,
+        FloorDecision floorDecision,
+        HumanOverrideToken? overrideToken = null)
     {
-        if (floorDecision is not FloorDecision.Allowed allowed)
+        switch (floorDecision)
         {
-            return Error.Conflict(
-                "Product.SalePrice.FloorGuard",
-                "Sale price rejected by the Profitability Floor Guard.");
-        }
+            case FloorDecision.Allowed allowed:
+                if (allowed.Price.Amount != price.Amount)
+                {
+                    return Error.Validation(
+                        "Product.SalePrice.Mismatch",
+                        "Approved price does not match the price being applied.");
+                }
 
-        if (allowed.Price.Amount != price.Amount)
-        {
-            return Error.Validation(
-                "Product.SalePrice.Mismatch",
-                "Approved price does not match the price being applied.");
+                break;
+
+            case FloorDecision.RequiresOverride requires when overrideToken is not null:
+                // Principle VIII: a human explicitly accepted the loss — audit the override.
+                RaiseDomainEvent(new ProfitabilityFloorHit(
+                    TenantId, Id, marketplace, overrideToken.ActorId, price, requires.Floor, DateTimeOffset.UtcNow));
+                break;
+
+            default:
+                return Error.Conflict(
+                    "Product.SalePrice.FloorGuard",
+                    "Sale price rejected by the Profitability Floor Guard.");
         }
 
         Price = price;

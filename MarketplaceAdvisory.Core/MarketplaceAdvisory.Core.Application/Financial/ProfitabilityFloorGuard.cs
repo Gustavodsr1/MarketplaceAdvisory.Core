@@ -32,14 +32,15 @@ public sealed class ProfitabilityFloorGuard : IProfitabilityFloorGuard
         {
             decision = new FloorDecision.Allowed(proposed);
         }
-        else if (overrideToken is not null)
-        {
-            var diff = floor.Amount - proposed.Amount;
-            decision = new FloorDecision.RequiresOverride(floor, proposed, diff);
-        }
         else
         {
-            decision = new FloorDecision.HeldFloorHit(floor, proposed);
+            var diff = floor.Amount - proposed.Amount;
+
+            // An override is honored only when the human declared a loss at least as large as the
+            // real gap to the floor — under-declaring the loss is treated as a plain floor hit.
+            decision = overrideToken is not null && overrideToken.AcceptedLossAmount >= diff
+                ? new FloorDecision.RequiresOverride(floor, proposed, diff)
+                : new FloorDecision.HeldFloorHit(floor, proposed);
         }
 
         return Task.FromResult(decision);
