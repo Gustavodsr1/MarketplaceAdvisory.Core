@@ -2,7 +2,10 @@ using System.Reflection;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
+using MarketplaceAdvisory.Core.Application.Common.Abstractions;
 using MarketplaceAdvisory.Core.Application.Common.Behaviors;
+using MarketplaceAdvisory.Core.Application.Financial;
+using MarketplaceAdvisory.Core.Domain.Financial;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,6 +32,11 @@ public static class DependencyInjection
         typeAdapterConfig.Scan(assembly);
         services.AddSingleton(typeAdapterConfig);
         services.AddScoped<IMapper, ServiceMapper>();
+
+        // Financial Engine — pure domain services + Principle VIII enforcement point.
+        services.AddSingleton<ProfitabilityCalculatorService>();
+        services.AddSingleton<IdealPriceSimulator>();
+        services.AddSingleton<IProfitabilityFloorGuard, ProfitabilityFloorGuard>();
 
         return services;
     }

@@ -47,6 +47,16 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
                 .IsRequired();
         });
 
+        // Ignored in v1 schema. Phase 3 (T031) will introduce dedicated columns/tables:
+        //   Cmv → owned Money (numeric + currency)
+        //   Weight → int grams
+        //   Dimensions → owned VO (width/height/length)
+        //   DefaultMarketplace → int enum
+        builder.Ignore(product => product.Cmv);
+        builder.Ignore(product => product.Weight);
+        builder.Ignore(product => product.Dimensions);
+        builder.Ignore(product => product.DefaultMarketplace);
+
         builder.Ignore(product => product.DomainEvents);
     }
 }

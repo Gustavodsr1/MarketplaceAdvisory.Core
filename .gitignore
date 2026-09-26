@@ -48,3 +48,15 @@ Thumbs.db
 
 ## Docker local volumes
 .data/
+
+## Spec Kit — ignore regenerable tooling (installed by `specify init`).
+## KEEP versioned: .specify/memory/ (constitution) and specs/ (feature specs).
+.specify/scripts/
+.specify/templates/
+.specify/workflows/
+.specify/integrations/
+.specify/integration.json
+.specify/init-options.json
+.specify/extensions/
+.specify/feature.json
+.github/skills/speckit-*/

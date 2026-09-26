@@ -4,6 +4,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.SharedKernel\MarketplaceAdvisory.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\MarketplaceAdvisory.Shared\MarketplaceAdvisory.Integrations.Abstractions\MarketplaceAdvisory.Integrations.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
