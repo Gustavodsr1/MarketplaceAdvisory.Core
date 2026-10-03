@@ -42,17 +42,10 @@ public sealed class ProductsController(ISender sender) : ControllerBase
 
     private IActionResult ToProblem(List<Error> errors)
     {
-        var error = errors.FirstOrDefault();
-        var statusCode = error.Type switch
+        var problemDetails = ApiProblemDetails.Create(errors, HttpContext);
+        return new ObjectResult(problemDetails)
         {
-            ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
-            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
-            ErrorType.Forbidden => StatusCodes.Status403Forbidden,
-            _ => StatusCodes.Status500InternalServerError
+            StatusCode = problemDetails.Status
         };
-
-        return Problem(statusCode: statusCode, title: error.Description);
     }
 }

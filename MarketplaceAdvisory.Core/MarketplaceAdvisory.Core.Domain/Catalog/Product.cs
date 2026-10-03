@@ -98,24 +98,6 @@ public sealed class Product : AggregateRoot<Guid>
             Guid.NewGuid(), tenantId, sku, name, salePrice, cmv, weight, dimensions, defaultMarketplace);
     }
 
-    /// <summary>
-    /// Legacy shortcut used by the existing controller/tests. Creates a product with reasonable
-    /// defaults on the Financial Engine inputs. Prefer the full overload in new code so the
-    /// Financial Engine has real data.
-    /// </summary>
-    public static ErrorOr<Product> Create(TenantId tenantId, string sku, string name, Money defaultPrice)
-    {
-        var cmv = new Money(Math.Max(defaultPrice.Amount / 2m, 0.01m), defaultPrice.Currency);
-        return Create(
-            tenantId,
-            sku,
-            name,
-            cmv,
-            defaultPrice,
-            new Weight(100),
-            new Dimensions(10m, 10m, 10m));
-    }
-
     public ErrorOr<Success> UpdateCmv(Money newCmv)
     {
         if (newCmv.Amount <= 0m)
@@ -168,10 +150,5 @@ public sealed class Product : AggregateRoot<Guid>
         return Result.Success;
     }
 
-    /// <summary>
-    /// Legacy shortcut kept for the existing controller/tests. New callers should always go
-    /// through <see cref="SetSalePrice"/> so the floor guard is consulted.
-    /// </summary>
-    public void ChangePrice(Money newPrice) => Price = newPrice;
 }
 

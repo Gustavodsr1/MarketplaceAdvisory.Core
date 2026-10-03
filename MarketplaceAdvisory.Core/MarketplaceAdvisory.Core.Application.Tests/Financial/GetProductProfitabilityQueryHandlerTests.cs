@@ -13,7 +13,16 @@ public sealed class GetProductProfitabilityQueryHandlerTests
     public async Task Returns_Yellow_For_SpecScenario()
     {
         var tenant = TenantId.New();
-        var product = Product.Create(tenant, "SKU-1", "Filtro", new Money(100m, "BRL")).Value;
+        var salePrice = new Money(100m, "BRL");
+        var cmv = new Money(salePrice.Amount * 0.5m, salePrice.Currency);
+        var product = Product.Create(
+            tenant,
+            "SKU-1",
+            "Filtro",
+            cmv,
+            salePrice,
+            new Weight(100),
+            new Dimensions(10m, 10m, 10m)).Value;
 
         var handler = new GetProductProfitabilityQueryHandler(
             new FakeProductRepository(product),

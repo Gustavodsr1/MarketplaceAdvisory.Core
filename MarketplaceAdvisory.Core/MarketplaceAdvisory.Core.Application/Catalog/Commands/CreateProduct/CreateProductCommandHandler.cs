@@ -19,11 +19,17 @@ public sealed class CreateProductCommandHandler(
     {
         var tenantId = tenantContext.TenantId ?? TenantId.From(Guid.Empty);
 
+        var salePrice = new Money(request.Price, request.Currency);
+        var cmv = new Money(Math.Max(salePrice.Amount * 0.5m, 0.01m), salePrice.Currency);
+
         var result = Product.Create(
             tenantId,
             request.Sku,
             request.Name,
-            new Money(request.Price, request.Currency));
+            cmv,
+            salePrice,
+            new Weight(100),
+            new Dimensions(10m, 10m, 10m));
 
         if (result.IsError)
         {

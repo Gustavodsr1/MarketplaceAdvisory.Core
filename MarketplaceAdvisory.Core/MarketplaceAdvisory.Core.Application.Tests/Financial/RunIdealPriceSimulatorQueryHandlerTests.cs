@@ -10,8 +10,20 @@ namespace MarketplaceAdvisory.Core.Application.Tests.Financial;
 
 public sealed class RunIdealPriceSimulatorQueryHandlerTests
 {
-    private static Product NewProduct(TenantId tenant, decimal price = 100m) =>
-        Product.Create(tenant, "SKU-1", "Filtro de óleo", new Money(price, "BRL")).Value;
+    private static Product NewProduct(TenantId tenant, decimal price = 100m)
+    {
+        var salePrice = new Money(price, "BRL");
+        var cmv = new Money(salePrice.Amount * 0.5m, salePrice.Currency);
+
+        return Product.Create(
+            tenant,
+            "SKU-1",
+            "Filtro de óleo",
+            cmv,
+            salePrice,
+            new Weight(100),
+            new Dimensions(10m, 10m, 10m)).Value;
+    }
 
     private static RunIdealPriceSimulatorQueryHandler NewHandler(TenantId tenant, Product product) =>
         new(

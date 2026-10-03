@@ -15,7 +15,16 @@ public sealed class SetSalePriceCommandHandlerTests
     private static (SetSalePriceCommandHandler Handler, FakeApplicationDbContext Context, Product Product) Build(
         TenantId tenant, decimal startPrice = 200m)
     {
-        var product = Product.Create(tenant, "SKU-1", "Filtro", new Money(startPrice, "BRL")).Value;
+        var salePrice = new Money(startPrice, "BRL");
+        var cmv = new Money(salePrice.Amount * 0.5m, salePrice.Currency);
+        var product = Product.Create(
+            tenant,
+            "SKU-1",
+            "Filtro",
+            cmv,
+            salePrice,
+            new Weight(100),
+            new Dimensions(10m, 10m, 10m)).Value;
         var context = new FakeApplicationDbContext();
 
         var handler = new SetSalePriceCommandHandler(

@@ -15,20 +15,14 @@ public sealed class GlobalExceptionHandler(IProblemDetailsService problemDetails
         Exception exception,
         CancellationToken cancellationToken)
     {
-        var (statusCode, title) = exception switch
+        var statusCode = exception switch
         {
-            ValidationException => (StatusCodes.Status400BadRequest, "One or more validation errors occurred."),
-            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.")
+            ValidationException => StatusCodes.Status400BadRequest,
+            _ => StatusCodes.Status500InternalServerError
         };
 
+        var problemDetails = ApiProblemDetails.Create(exception, httpContext);
         httpContext.Response.StatusCode = statusCode;
-
-        var problemDetails = new ProblemDetails
-        {
-            Status = statusCode,
-            Title = title,
-            Type = $"https://httpstatuses.io/{statusCode}"
-        };
 
         if (exception is ValidationException validationException)
         {
